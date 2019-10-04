@@ -20,17 +20,20 @@
 
 axios.get('https://lambda-times-backend.herokuapp.com/articles')
     .then(response => {
-        console.log(response);
-        // response.data.articles.forEach(info => {
-        //     console.log(info);
-        // })
+        const properties = response.data.articles;
+    for (tabs in properties) {
+        console.log(properties);
+        properties[tabs].forEach(item => {
+            const newCard = cards(item);
+            cardEntryPoint.appendChild(newCard);
+        })
+    }
     })
-
     .catch(error => {
         console.log('No information was received.', error);
-    });
+    })
 
-    const entryPoint = document.querySelector('.topics');
+    const cardEntryPoint = document.querySelector('.cards-container');
 
      
     function cards(info) {
@@ -46,7 +49,7 @@ axios.get('https://lambda-times-backend.herokuapp.com/articles')
     card.classList.add('card');
     headline.classList.add('headline');
     authorContainer.classList.add('author');
-    imgContainer.classList.add('image-container');
+    imgContainer.classList.add('img-container');
 
     // append each element accordingly
     card.appendChild(headline);
@@ -56,9 +59,9 @@ axios.get('https://lambda-times-backend.herokuapp.com/articles')
     authorContainer.appendChild(author);
 
     // set element content
-    headline.textContent = `${info.data.articles.headline}`;
-    image.src = `${info.data.articles.authorPhoto}`;
-    author.textContent = `By ${info.data.articles.authorName}`;
+    headline.textContent = info.headline;
+    image.src = info.authorPhoto;
+    author.textContent = `By ${info.authorName}`;
 
     return card
     }
